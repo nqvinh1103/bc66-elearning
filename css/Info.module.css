@@ -1,0 +1,29 @@
+.itemInfo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  text-align: left;
+}
+.itemInfo .infoItemHome {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+.itemInfo .largeItem {
+  grid-row: 1/span 2;
+  background-color: #41b294;
+  background-position: 100% 100%;
+  background-size: 50%;
+  background-repeat: no-repeat;
+}
+.itemInfo .largeItem .infoContent::before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 0;
+  left: -160%;
+  width: 50%;
+  height: 100%;
+  z-index: 2;
+  background: linear-gradient(90deg, hsla(0, 0%, 100%, 0) 0, hsla(0, 0%, 100%, 0.3));
+}/*# sourceMappingURL=Info.module.css.map */
