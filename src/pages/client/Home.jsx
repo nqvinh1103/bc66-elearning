@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Banner } from "./Banner";
+import SimpleSlider from "./Carousel";
 import Courses from "./Courses";
 import { Info } from "./Info";
 import { NumberContainer } from "./NumberContainer";
@@ -16,6 +17,7 @@ export const Home = () => {
         </div>
         <Courses/>
         <NumberContainer/>
+        <SimpleSlider/>
       </Container>
     </>
   );
