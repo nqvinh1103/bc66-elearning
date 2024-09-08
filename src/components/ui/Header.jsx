@@ -127,7 +127,7 @@ export const Header = () => {
 };
 
 const Container = styled.header`
-  // background: linear-gradient(-180deg, #09fe8975, #dcb8ac);
+  background: white;
   box-shadow: 0px 16px 10px -5px rgba(0, 0, 0, 0.1);
 
   &.header-fixed {

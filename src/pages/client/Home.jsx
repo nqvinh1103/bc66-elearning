@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { Banner } from "./Banner";
+import SimpleSlider from "./Carousel";
 import Courses from "./Courses";
 import { Info } from "./Info";
-import CarouselSlide from "./Carousel";
 import { Bottom } from "./Bottom";
 
 export const Home = () => {
