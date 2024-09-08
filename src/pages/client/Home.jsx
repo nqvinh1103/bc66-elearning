@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { Banner } from "./Banner";
+import { Bottom } from "./Bottom";
 import SimpleSlider from "./Carousel";
 import Courses from "./Courses";
 import { Info } from "./Info";
-import { Bottom } from "./Bottom";
 
 export const Home = () => {
   return (
@@ -20,7 +20,7 @@ export const Home = () => {
           </h6>
         </div>
         <Courses />
-        <CarouselSlide />
+        <SimpleSlider/>
         <Bottom />
       </Container>
     </>
