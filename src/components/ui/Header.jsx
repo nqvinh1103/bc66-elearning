@@ -24,18 +24,81 @@ export const Header = () => {
           <nav className="max-w-[1200px] w-full flex items-center mx-auto">
             <div className="flex justify-between w-full">
               <div className={styles.header_left}>
-                <NavLink to="/" target="_blank">
-                  DANH MỤC
-                </NavLink>
+                <div className="relative group">
+                  <NavLink
+                    to="/"
+                    target="_blank"
+                    className="group-hover:text-blue-500"
+                  >
+                    DANH MỤC
+                  </NavLink>
+                  <div className="absolute hidden group-hover:block bg-white shadow-md mt-2 rounded-lg">
+                    <NavLink
+                      to="/backend"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      LẬP TRÌNH BACKEND
+                    </NavLink>
+                    <NavLink
+                      to="/web"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      THIẾT KẾ WEB
+                    </NavLink>
+                    <NavLink
+                      to="/didong"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      LẬP TRÌNH DI ĐỘNG 
+                    </NavLink>
+                    <NavLink
+                      to="/frontend"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      LẬP TRÌNH FRONT END
+                    </NavLink>
+                    <NavLink
+                      to="/fullstack"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      LẬP TRÌNH FULLSTACK
+                    </NavLink>
+                    <NavLink
+                      to="/tuduy"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      TƯ DUY LẬP TRÌNH
+                    </NavLink>
+                  </div>
+                </div>
                 <NavLink to="/">KHÓA HỌC</NavLink>
                 <NavLink to="/">BLOG</NavLink>
-                <NavLink to="/">SỰ KIỆN</NavLink>
+                <div className="relative group">
+                  <NavLink to="/" className="group-hover:text-blue-500">
+                    SỰ KIỆN
+                  </NavLink>
+                  <div className="absolute hidden group-hover:block bg-white shadow-md mt-2 rounded-lg">
+                    <NavLink
+                      to="/sale"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Sale Cuối Năm
+                    </NavLink>
+                    <NavLink
+                      to="/giangsinh"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Giáng Sinh
+                    </NavLink>
+                    <NavLink
+                      to="/noel"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Noel
+                    </NavLink>
+                  </div>
+                </div>
                 <NavLink to="/">THÔNG TIN</NavLink>
-                <NavLink to="/">
-                  FOLLOW US ON
-                  <i className="fa-brands fa-facebook px-8"></i>
-                  <i className="fa-brands fa-instagram"></i>
-                </NavLink>
               </div>
               <ul className={styles.header_right}>
                 <li>
@@ -65,6 +128,7 @@ export const Header = () => {
               </ul>
             </div>
           </nav>
+
           <div
             className={cn(
               styles.header_bottom,
@@ -109,15 +173,6 @@ export const Header = () => {
                 </Button>
               </Search>
             </div>
-            {/* <div className={styles.header_cart}>
-              <div className="relative">
-                <div className="py-10 px-0">
-                  <NavLink to="/" className="flex items-center">
-                    <i className="fa-solid fa-cart-shopping text-[25px]"></i>
-                  </NavLink>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </Container>
