@@ -1,5 +1,6 @@
 import { Card, Col, Row } from "antd";
 import React from "react";
+import { NavLink } from "react-router-dom";
 import styles from "./Course.module.scss";
 const { Meta } = Card;
 
@@ -8,54 +9,56 @@ const Courses = () => (
     {/* First session */}
     <Row gutter={24}>
       <Col span={6}>
-        <Card
-          hoverable
-          style={{
-            // Đặt chiều cao cố định cho Card
-            overflow: "hidden", // Giới hạn nội dung khi quá cao
-          }}
-          cover={
-            <img
-              alt="example"
-              src="https://elearningnew.cybersoft.edu.vn/hinhanh/javascriptt_gp01.png"
-              style={{
-                height: "150px",
-                width: "100%",
-                objectFit: "cover", // Đảm bảo hình ảnh lấp đầy khung mà không bị méo
-              }}
-            />
-          }
-        >
-          <Meta
-            style={{ padding: 10 }}
-            title={<span className={styles.customTitle}>Javascript</span>}
-            description="Lập trình hiện đang là xu hướng trên toàn thế giới..."
-          />
-          <div className={styles.titleMaker}>
-            <div className={styles.imgFooter}>
+        <NavLink to="/chitiet">
+          <Card
+            hoverable
+            style={{
+              // Đặt chiều cao cố định cho Card
+              overflow: "hidden", // Giới hạn nội dung khi quá cao
+            }}
+            cover={
               <img
-                src="https://demo2.cybersoft.edu.vn/static/media/avatar2.bb9626e2.png"
-                alt=""
+                alt="example"
+                src="https://elearningnew.cybersoft.edu.vn/hinhanh/javascriptt_gp01.png"
+                style={{
+                  height: "150px",
+                  width: "100%",
+                  objectFit: "cover", // Đảm bảo hình ảnh lấp đầy khung mà không bị méo
+                }}
               />
+            }
+          >
+            <Meta
+              style={{ padding: 10 }}
+              title={<span className={styles.customTitle}>Javascript</span>}
+              description="Lập trình hiện đang là xu hướng trên toàn thế giới..."
+            />
+            <div className={styles.titleMaker}>
+              <div className={styles.imgFooter}>
+                <img
+                  src="https://demo2.cybersoft.edu.vn/static/media/avatar2.bb9626e2.png"
+                  alt=""
+                />
+              </div>
+              <span className={`${styles.cardColor} ml-2`}>Elon musk</span>
             </div>
-            <span className={`${styles.cardColor} ml-2`}>Elon musk</span>
-          </div>
-          <div className={styles.cardFooter}>
-            <div>
-              <p>
-                800.000<sup>đ</sup>
-              </p>
-              <p>
-                400.000<sup>đ</sup>
-              </p>
+            <div className={styles.cardFooter}>
+              <div>
+                <p>
+                  800.000<sup>đ</sup>
+                </p>
+                <p>
+                  400.000<sup>đ</sup>
+                </p>
+              </div>
+              <div>
+                <i className={`${styles.textStar} fas fa-star mr-1`}></i>
+                <span className={styles.textStar}>4.9</span>
+                <span className={styles.cardColor}> (7840)</span>
+              </div>
             </div>
-            <div>
-              <i className={`${styles.textStar} fas fa-star mr-1`}></i>
-              <span className={styles.textStar}>4.9</span>
-              <span className={styles.cardColor}> (7840)</span>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        </NavLink>
       </Col>
       <Col span={6}>
         <Card
