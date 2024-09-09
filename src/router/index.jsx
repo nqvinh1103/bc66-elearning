@@ -7,6 +7,7 @@ import { FrontEnd } from "../pages/client/DanhMuc/FrontEnd/FrontEnd";
 import { FullStack } from "../pages/client/DanhMuc/FullStack/FullStack";
 import { TuDuy } from "../pages/client/DanhMuc/TuDuy/TuDuy";
 import { Web } from "../pages/client/DanhMuc/Web/Web";
+import { DetailPage } from "../pages/client/DetailPage/DetailPage";
 import NotFound from "../pages/client/NotFound/NotFound";
 const Router = () => {
   const routing = useRoutes([
@@ -54,6 +55,10 @@ const Router = () => {
         {
           path: "/noel",
           element: <NotFound/>
+        },
+        {
+          path: "/chitiet",
+          element: <DetailPage/>
         },
       ],
     },
