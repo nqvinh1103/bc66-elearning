@@ -49,7 +49,7 @@ export const Header = () => {
                       to="/didong"
                       className="block px-4 py-2 hover:bg-gray-100"
                     >
-                      LẬP TRÌNH DI ĐỘNG 
+                      LẬP TRÌNH DI ĐỘNG
                     </NavLink>
                     <NavLink
                       to="/frontend"
@@ -71,8 +71,12 @@ export const Header = () => {
                     </NavLink>
                   </div>
                 </div>
-                <NavLink to="/">KHÓA HỌC</NavLink>
-                <NavLink to="/">BLOG</NavLink>
+                <NavLink to="/classes" className="hover:text-blue-500">
+                  KHÓA HỌC
+                </NavLink>
+                <NavLink to="/blog" className="hover:text-blue-500">
+                  BLOG
+                </NavLink>
                 <div className="relative group">
                   <NavLink to="/" className="group-hover:text-blue-500">
                     SỰ KIỆN
@@ -98,7 +102,9 @@ export const Header = () => {
                     </NavLink>
                   </div>
                 </div>
-                <NavLink to="/">THÔNG TIN</NavLink>
+                <NavLink to="/detail" className="hover:text-blue-500">
+                  THÔNG TIN
+                </NavLink>
               </div>
               <ul className={styles.header_right}>
                 <li>

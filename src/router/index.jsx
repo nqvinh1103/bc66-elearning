@@ -9,6 +9,9 @@ import { TuDuy } from "../pages/client/DanhMuc/TuDuy/TuDuy";
 import { Web } from "../pages/client/DanhMuc/Web/Web";
 import { DetailPage } from "../pages/client/DetailPage/DetailPage";
 import NotFound from "../pages/client/NotFound/NotFound";
+import { Detail } from "../pages/client/Detail/Detail";
+import { Classes } from "../pages/client/Classes/Classes";
+import { Blog } from "../pages/client/Blog/Blog";
 const Router = () => {
   const routing = useRoutes([
     {
@@ -17,48 +20,60 @@ const Router = () => {
       children: [
         {
           index: true,
-          path:"",
+          path: "",
           element: <Home />,
         },
         {
           path: "/backend",
-          element: <BackEnd/>
+          element: <BackEnd />,
         },
         {
           path: "/didong",
-          element: <DiDong/>
+          element: <DiDong />,
         },
         {
           path: "/frontend",
-          element: <FrontEnd/>
+          element: <FrontEnd />,
         },
         {
           path: "/fullstack",
-          element: <FullStack/>
+          element: <FullStack />,
         },
         {
           path: "/tuduy",
-          element: <TuDuy/>
+          element: <TuDuy />,
         },
         {
           path: "/web",
-          element: <Web/>
+          element: <Web />,
         },
         {
           path: "/sale",
-          element: <NotFound/>
+          element: <NotFound />,
         },
         {
           path: "/giangsinh",
-          element: <NotFound/>
+          element: <NotFound />,
         },
         {
           path: "/noel",
-          element: <NotFound/>
+          element: <NotFound />,
         },
         {
           path: "/chitiet",
-          element: <DetailPage/>
+          element: <DetailPage />,
+        },
+        {
+          path: "/detail",
+          element: <Detail />,
+        },
+        {
+          path: "/classes",
+          element: <Classes />,
+        },
+        {
+          path: "/blog",
+          element: <Blog />,
         },
       ],
     },
