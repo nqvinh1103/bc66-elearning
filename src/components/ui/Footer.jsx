@@ -96,7 +96,7 @@ export const Footer = () => {
         <div className={styles.textCardTitle}>
           <p>Copyright © 2021. All rights reserved.</p>
         </div>
-        <div className={styles.socialMedia}>
+        <div className={styles.socialMedia} p-0>
           <i className={`${styles.iconMedia} fab fa-instagram `}></i>
           <i className={`${styles.iconMedia} fab fa-facebook`}></i>
           <i className={`${styles.iconMedia} fab fa-twitter`}></i>
