@@ -1,12 +1,41 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AuthTemplate } from "components";
+import { useAuth } from "hooks";
 import { useOpenModal } from "hooks/useOpenModal";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import { courseApi } from "../../../apis/course.api";
 import styles from "./DetailPage.module.scss";
 
 export const DetailPage = () => {
+  const { maKhoaHoc } = useParams();
   const { isOpen, openModal, closeModal } = useOpenModal();
+  const { accessToken, user } = useAuth();
+  console.log(accessToken)
+  console.log(user)
+  const { data, loading, error } = useQuery({
+    queryKey: ["detail-course"],
+    queryFn: () => courseApi.getDetailCourse(maKhoaHoc),
+  });
+
+  const { mutate: handleRegisterCourse } = useMutation({
+    mutationFn: (payload) => courseApi.registerCourse(payload),
+    onSuccess: () => {
+      toast.success("Đăng ký khóa học thành công");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.content);
+    },
+  });
+  const onSubmitCourse = () => {
+    const payload = {
+      maKhoaHoc,
+      taikhoan: user?.taiKhoan,
+    };
+    handleRegisterCourse(payload);
+  };
+
   return (
     <>
       <div className={styles.titleCourse}>
@@ -17,7 +46,7 @@ export const DetailPage = () => {
         <div className="grid grid-cols-3">
           {/* left part */}
           <div className="col-span-2 text-left">
-            <h4 className="font-500">Lập Trình Elearning 2</h4>
+            <h4 className="font-500">{data?.tenKhoaHoc}</h4>
             <div className="grid grid-cols-3 py-30">
               {/* 1 */}
               <div>
@@ -307,9 +336,25 @@ export const DetailPage = () => {
                   <i className="fas fa-bolt"></i>500.000<sup>đ</sup>
                 </p>
               </div>
-              <NavLink to="/" onClick={openModal}>
-                <button className={styles.btnPreview}>Đăng ký</button>
-              </NavLink>
+              {accessToken ? (
+                <NavLink
+                  to="javascript:void(0)"
+                  onClick={() => onSubmitCourse()}
+                >
+                  <button type="button" className={styles.btnPreview}>
+                    Ghi danh khóa học
+                  </button>
+                </NavLink>
+              ) : (
+                <button
+                  type="button"
+                  onClick={openModal}
+                  className={styles.btnPreview}
+                >
+                  Đăng ký
+                </button>
+              )}
+
               <div className={styles.sideBarDetailContent}>
                 <ul>
                   <li>

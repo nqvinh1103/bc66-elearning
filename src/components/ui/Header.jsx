@@ -1,17 +1,32 @@
 import { Button } from "antd";
 import cn from "classnames";
 import { AuthTemplate } from "components";
-import { useQueryParams } from "hooks";
+import { useAuth, useQueryParams } from "hooks";
 import { useOpenModal } from "hooks/useOpenModal";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 import styled from "styled-components";
+import { userManagementActions } from "../../store/userManagement";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
   const [inputValue, setInputValue] = useState("");
   const { isOpen, openModal, closeModal } = useOpenModal();
   const [queryParams, setQueryParams] = useQueryParams();
+  const {accessToken, user} = useAuth();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    try {
+      dispatch(userManagementActions.logout())
+      toast.success("Logout Success")
+    } catch (error) {
+      console.log(error);
+      toast.error("Logout Failed")
+    }
+  }
+  
 
   return (
     <>
@@ -125,12 +140,21 @@ export const Header = () => {
                     English
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/" onClick={openModal}>
-                    <i className="fa-regular fa-face-smile-wink"></i>
-                    TÀI KHOẢN
+                {accessToken ? (
+                  <li>
+                  <NavLink to="/" onClick={() => handleLogout()}>
+                  <i className="fa-solid fa-fa-sign-out-alt"></i>
+                  Đăng Xuất
                   </NavLink>
                 </li>
+                ) : (
+                  <li>
+                <NavLink to="/" onClick={openModal}>
+                  <i className="fa-regular fa-face-smile-wink"></i>
+                  TÀI KHOẢN
+                </NavLink>
+              </li>
+                )}
               </ul>
             </div>
           </nav>
