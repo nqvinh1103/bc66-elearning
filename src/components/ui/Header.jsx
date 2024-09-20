@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "antd";
 import cn from "classnames";
 import { AuthTemplate } from "components";
@@ -8,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { courseApi } from "../../apis/course.api";
 import { userManagementActions } from "../../store/userManagement";
 import styles from "./Header.module.scss";
 
@@ -15,18 +17,24 @@ export const Header = () => {
   const [inputValue, setInputValue] = useState("");
   const { isOpen, openModal, closeModal } = useOpenModal();
   const [queryParams, setQueryParams] = useQueryParams();
-  const {accessToken, user} = useAuth();
+  const { accessToken, user } = useAuth();
   const dispatch = useDispatch();
   const handleLogout = () => {
     try {
-      dispatch(userManagementActions.logout())
-      toast.success("Logout Success")
+      dispatch(userManagementActions.logout());
+      toast.success("Logout Success");
     } catch (error) {
       console.log(error);
-      toast.error("Logout Failed")
+      toast.error("Logout Failed");
     }
-  }
-  
+  };
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["list-danhmuc"],
+    queryFn: () => courseApi.getDanhMucKhoaHoc(),
+  });
+
+  console.log(data);
 
   return (
     <>
@@ -48,42 +56,18 @@ export const Header = () => {
                     DANH MỤC
                   </NavLink>
                   <div className="absolute hidden group-hover:block bg-white shadow-md mt-2 rounded-lg">
-                    <NavLink
-                      to="/backend"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      LẬP TRÌNH BACKEND
-                    </NavLink>
-                    <NavLink
-                      to="/web"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      THIẾT KẾ WEB
-                    </NavLink>
-                    <NavLink
-                      to="/didong"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      LẬP TRÌNH DI ĐỘNG
-                    </NavLink>
-                    <NavLink
-                      to="/frontend"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      LẬP TRÌNH FRONT END
-                    </NavLink>
-                    <NavLink
-                      to="/fullstack"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      LẬP TRÌNH FULLSTACK
-                    </NavLink>
-                    <NavLink
-                      to="/tuduy"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      TƯ DUY LẬP TRÌNH
-                    </NavLink>
+                    {data?.map((item) => {
+                      return (
+                        <NavLink
+                          key={`danhmuc-${item.maDanhMuc}`}
+                          to={`/danhmuckhoahoc/${item.maDanhMuc}`}
+                          target="_blank"
+                          className="group-hover:text-blue-500"
+                        >
+                          {item.tenDanhMuc}
+                        </NavLink>
+                      );
+                    })}
                   </div>
                 </div>
                 <NavLink to="/classes" className="hover:text-blue-500">
@@ -142,18 +126,18 @@ export const Header = () => {
                 </li>
                 {accessToken ? (
                   <li>
-                  <NavLink to="/" onClick={() => handleLogout()}>
-                  <i className="fa-solid fa-fa-sign-out-alt"></i>
-                  Đăng Xuất
-                  </NavLink>
-                </li>
+                    <NavLink to="/" onClick={() => handleLogout()}>
+                      <i className="fa-solid fa-fa-sign-out-alt"></i>
+                      Đăng Xuất
+                    </NavLink>
+                  </li>
                 ) : (
                   <li>
-                <NavLink to="/" onClick={openModal}>
-                  <i className="fa-regular fa-face-smile-wink"></i>
-                  TÀI KHOẢN
-                </NavLink>
-              </li>
+                    <NavLink to="/" onClick={openModal}>
+                      <i className="fa-regular fa-face-smile-wink"></i>
+                      TÀI KHOẢN
+                    </NavLink>
+                  </li>
                 )}
               </ul>
             </div>

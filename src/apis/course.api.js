@@ -25,5 +25,22 @@ export const courseApi = {
     } catch (error) {
       throw Error(error?.response?.data?.content);
     }
+  },
+  getCourseCatalog: async (maDanhMuc) => {
+    try {
+      const response = await fetcher.get(`/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${maDanhMuc}&MaNhom=GP01`)
+      return response.data
+    } catch (error) {
+      throw Error(error?.response?.data?.content)
+    }
+  },
+  getDanhMucKhoaHoc: async () => {
+    try {
+      const response = await fetcher.get("/QuanLyKhoaHoc/LayDanhMucKhoaHoc")
+      return response.data
+    } catch (error) {
+      throw Error(error?.response?.data?.content)
+    }
   }
+  
 };

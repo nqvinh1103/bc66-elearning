@@ -43,12 +43,13 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
   });
 
   // Login mutation
-  const { mutate: handleLogin, isPending } = useMutation({
+  const { mutate: handleLogin, isPending: isPendingLogin } = useMutation({
     mutationFn: (payload) => userApi.login(payload),
     onSuccess: (response) => {
       dispatch(userManagementActions.login(response));
       onCloseModal();
       toast.success("Login Success");
+      reset()
       navigate("/");
     },
     onError: (error) => {
@@ -57,7 +58,7 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
   });
 
   // Register mutation (example, replace with actual implementation)
-  const { mutate: handleRegister } = useMutation({
+  const { mutate: handleRegister, isPending: isPendingRegister } = useMutation({
     mutationFn: (payload) => userApi.register(payload),
     onSuccess: () => {
       toast.success("Registration Successfull");
@@ -68,25 +69,26 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
       toast.error(error?.response?.data?.content);
     },
   });
-
   // Submit handler for option
   const onSubmitLogin = async (values) => {
     const payload = {
-      taiKhoan: values.email,
+      taiKhoan: values.taiKhoan_login,
       matKhau: values.password,
     };
     handleLogin(payload);
   };
 
-  const onSubmitRegister = async (data) => {
-    try {
-      console.log(data);
-      reset();
-    } catch (error) {
-      console.log(error);
+  const onSubmitRegister = async (values) => {
+    const payload = {
+      hoTen: values.hoTen,
+      taiKhoan: values.taiKhoan_register,
+      matKhau: values.matKhau,
+      email: values.email,
+      soDT: values.soDT,
+      maNhom: "GP01",
     }
+    handleRegister(payload)
   };
-
   return (
     <Modal
       open={isOpen}
@@ -123,23 +125,23 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
               <Paragraph>or use your account</Paragraph>
               <Input
                 className="w-full"
-                id="email"
-                placeholder="Email"
+                id="taiKhoan_login"
+                placeholder="Tài khoản"
                 register={register}
-                name="email"
-                error={errors?.email?.message}
+                name="taiKhoan_login"
+                error={errors?.taiKhoan_login?.message}
               />
               <Input
                 className="w-full"
                 id="password"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 register={register}
                 type="password"
                 name="password"
                 error={errors?.password?.message}
               />
               <Paragraph>Forgot your password?</Paragraph>
-              <Button type="submit">Sign In</Button>
+              <Button type="submit" disabled={isPendingLogin}>Sign In</Button>
             </Form>
           </SignInContainer>
         ) : (
@@ -161,29 +163,50 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
               Uncomment these lines to use inputs for registration
               <Input
                 className="w-full"
-                {...register("taiKhoan", {
-                  required: "(*) Tài khoản không được để trống",
-                })}
+                register={register}
+                id="hoTen"
+                name="hoTen"
                 type="text"
-                placeholder="Name"
+                placeholder="Họ Tên"
+                error={errors?.hoTen?.message}
               />
               <Input
                 className="w-full"
-                {...register("email", {
-                  required: "(*) Email không được để trống",
-                })}
+                register={register}
+                id="taiKhoan_register"
+                name="taiKhoan_register"
+                type="text"
+                placeholder="Tài khoản"
+                error={errors?.taiKhoan_register?.message}
+              />
+              <Input
+                className="w-full"
+                register={register}
+                id="matKhau"
+                name="matKhau"
+                type="password"
+                placeholder="Mật khẩu"
+                error={errors?.matKhau?.message}
+              />
+              <Input
+                className="w-full"
+                register={register}
+                id="email"
+                name="email"
                 type="email"
                 placeholder="Email"
+                error={errors?.email?.message}
               />
               <Input
                 className="w-full"
-                {...register("matKhau", {
-                  required: "(*) Mật khẩu không được để trống",
-                })}
-                type="password"
-                placeholder="Password"
+                register={register}
+                id="soDT"
+                name="soDT"
+                type="text"
+                placeholder="Số điện thoại"
+                error={errors?.soDT?.message}
               />
-              <Button type="submit">Sign Up</Button>
+              <Button type="submit" disabled={isPendingRegister}>Sign Up</Button>
             </Form>
           </SignUpContainer>
         )}

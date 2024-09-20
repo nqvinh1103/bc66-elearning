@@ -16,7 +16,7 @@ const Courses = () => {
       {/* First session */}
       <Row gutter={24}>
         {data?.map((course, index) => {
-          const { hinhAnh, maKhoaHoc, moTa, tenKhoaHoc } = course;
+          const { hinhAnh, maKhoaHoc, tenKhoaHoc } = course;
           if (index >= 1 && index < 13) {
             return (
               <Col span={6} key={maKhoaHoc}>
@@ -24,7 +24,7 @@ const Courses = () => {
                   <Card
                     hoverable
                     style={{
-                      minHeight: "446px",
+                      minHeight: "380px",
                       overflow: "hidden", // Giới hạn nội dung khi quá cao
                       marginBottom: "20px",
                     }}
@@ -45,7 +45,7 @@ const Courses = () => {
                       title={
                         <span className={styles.customTitle}>{tenKhoaHoc}</span>
                       }
-                      description={moTa}
+                      description="Lập trình hiện đang là xu hướng trên toàn thế giới..."
                     />
                     <div className={styles.titleMaker}>
                       <div className={styles.imgFooter}>

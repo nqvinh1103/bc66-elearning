@@ -21,6 +21,9 @@ const userManagementSlice = createSlice({
             state.userLogin = undefined;
             storage.remove("accessToken");
             storage.remove("userLogin");
+        },
+        getUserByAccessToken: (state, {payload}) => {
+            state.userLogin = payload
         }
     }
 })
