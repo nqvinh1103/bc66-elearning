@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./Footer.module.scss";
 
 export const Footer = () => {
@@ -22,7 +21,7 @@ export const Footer = () => {
                 <span>devit@gmail.com</span>
               </li>
               <li>
-                <i class="fas fa-map-marker-alt iconFooter"></i>
+                <i className="fas fa-map-marker-alt iconFooter"></i>
                 <span>Đà Nẵng</span>
               </li>
             </ul>
@@ -96,7 +95,7 @@ export const Footer = () => {
         <div className={styles.textCardTitle}>
           <p>Copyright © 2021. All rights reserved.</p>
         </div>
-        <div className={styles.socialMedia} p-0>
+        <div className={styles.socialMedia}>
           <i className={`${styles.iconMedia} fab fa-instagram `}></i>
           <i className={`${styles.iconMedia} fab fa-facebook`}></i>
           <i className={`${styles.iconMedia} fab fa-twitter`}></i>

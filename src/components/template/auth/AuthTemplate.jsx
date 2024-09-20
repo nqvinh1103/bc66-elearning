@@ -1,4 +1,3 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import cn from "classnames";
@@ -19,18 +18,19 @@ import {
   OverlayPanel,
   GhostButton,
 } from "./AuthStyles";
-// import { LoginSchema, RegisterSchema } from "schema";
-// import { useAppDispatch } from "store";
-// import { loginThunk } from "store/managementUser";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-// import { handleError } from "utils";
+import { useDispatch } from "react-redux";
+import { useMutation } from "@tanstack/react-query";
+import { userManagementActions } from "../../../store/userManagement";
+import { userApi } from "apis";
 
 export const AuthTemplate = ({ isOpen, onCloseModal }) => {
   const [signIn, setSignIn] = useState(true);
-  // const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Form setup
   const {
     register,
     handleSubmit,
@@ -38,31 +38,54 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
     reset,
   } = useForm({
     mode: "onChange",
-    // resolver: zodResolver(LoginSchema || RegisterSchema),
   });
 
+  // Login mutation
+  const { mutate: handleLogin, isPending } = useMutation({
+    mutationFn: (payload) => userApi.login(payload),
+    onSuccess: (response) => {
+      dispatch(userManagementActions.login(response));
+      onCloseModal();
+      toast.success("Login Success");
+      navigate("/");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.content);
+    },
+  });
+
+  // Register mutation (example, replace with actual implementation)
+  const { mutate: handleRegister } = useMutation({
+    mutationFn: (payload) => userApi.register(payload), // Assuming you have a userApi.register function
+    onSuccess: () => {
+      toast.success("Registration Successful");
+      reset();
+      onCloseModal();
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.content);
+    },
+  });
+
+  // Submit handler for Login
   const onSubmitLogin = async (values) => {
-    console.log(values)
-    // try {
-    //   dispatch(loginThunk(values))
-    //     .unwrap()
-    //     .then(() => {
-    //       onCloseModal();
-    //       toast.success("Login Success");
-    //       navigate("/");
-    //     });
-    // } catch (error) {
-    //   handleError(error);
-    // }
+    console.log(values);
+
+    const payload = {
+      taiKhoan: values.email,
+      matKhau: values.password,
+    };
+    handleLogin(payload);
   };
 
-  const onSubmitRegister = async (data) => {
-    try {
-      console.log(data);
-      reset();
-    } catch (error) {
-      console.log(error);
-    }
+  // Submit handler for Register
+  const onSubmitRegister = async (values) => {
+    const payload = {
+      taiKhoan: values.taiKhoan,
+      email: values.email,
+      matKhau: values.matKhau,
+    };
+    handleRegister(payload);
   };
 
   return (
@@ -83,88 +106,89 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
       <FormContainer
         className={cn({ "signin-active": signIn, "signup-active": !signIn })}
       >
-        <SignUpContainer className="sign-up-container">
-          <Form onSubmit={handleSubmit(onSubmitRegister)}>
-            <Title>Create Account</Title>
-            <SocialContainer>
-              <SocialButton>
-                <i className="fab fa-facebook-f"></i>
-              </SocialButton>
-              <SocialButton>
-                <i className="fab fa-google-plus-g"></i>
-              </SocialButton>
-              <SocialButton>
-                <i className="fab fa-linkedin-in"></i>
-              </SocialButton>
-            </SocialContainer>
-            <Paragraph>or use your email for registration</Paragraph>
-            Uncomment these lines to use inputs for registration
-            
-            <Input
-            className="w-full"
-              {...register("taiKhoan", {
-                required: "(*) Tài khoản không được để trống",
-              })}
-              type="text"
-              placeholder="Name"
-            />
-            <Input
-            className="w-full"
-              {...register("email", {
-                required: "(*) Email không được để trống",
-              })}
-              type="email"
-              placeholder="Email"
-            />
-            <Input
-            className="w-full"
-              {...register("matKhau", {
-                required: "(*) Mật khẩu không được để trống",
-              })}
-              type="password"
-              placeholder="Password"
-            />
-           
-            <Button type="submit">Sign Up</Button>
-          </Form>
-        </SignUpContainer>
+        {signIn ? (
+          <SignInContainer className="sign-in-container">
+            <Form onSubmit={handleSubmit(onSubmitLogin)}>
+              <Title>Sign in</Title>
+              <SocialContainer>
+                <SocialButton>
+                  <i className="fab fa-facebook-f"></i>
+                </SocialButton>
+                <SocialButton>
+                  <i className="fab fa-google-plus-g"></i>
+                </SocialButton>
+                <SocialButton>
+                  <i className="fab fa-linkedin-in"></i>
+                </SocialButton>
+              </SocialContainer>
+              <Paragraph>or use your account</Paragraph>
+              <Input
+                className="w-full"
+                id="email"
+                placeholder="Email"
+                register={register}
+                name="email"
+                error={errors?.email?.message}
+              />
+              <Input
+                className="w-full"
+                id="password"
+                placeholder="Password"
+                register={register}
+                type="password"
+                name="password"
+                error={errors?.password?.message}
+              />
+              <Paragraph>Forgot your password?</Paragraph>
+              <Button type="submit">Sign In</Button>
+            </Form>
+          </SignInContainer>
+        ) : (
+          <SignUpContainer className="sign-up-container">
+            <Form onSubmit={handleSubmit(onSubmitRegister)}>
+              <Title>Create Account</Title>
+              <SocialContainer>
+                <SocialButton>
+                  <i className="fab fa-facebook-f"></i>
+                </SocialButton>
+                <SocialButton>
+                  <i className="fab fa-google-plus-g"></i>
+                </SocialButton>
+                <SocialButton>
+                  <i className="fab fa-linkedin-in"></i>
+                </SocialButton>
+              </SocialContainer>
+              <Paragraph>or use your email for registration</Paragraph>
 
-        <SignInContainer className="sign-in-container">
-          <Form onSubmit={handleSubmit(onSubmitLogin)}>
-            <Title>Sign in</Title>
-            <SocialContainer>
-              <SocialButton>
-                <i className="fab fa-facebook-f"></i>
-              </SocialButton>
-              <SocialButton>
-                <i className="fab fa-google-plus-g"></i>
-              </SocialButton>
-              <SocialButton>
-                <i className="fab fa-linkedin-in"></i>
-              </SocialButton>
-            </SocialContainer>
-            <Paragraph>or use your account</Paragraph>
-            <Input
-              className="w-full"
-              id="email"
-              placeholder="Email"
-              register={register}
-              name="email"
-              error={errors?.email?.message}
-            />
-            <Input
-              className="w-full"
-              id="password"
-              placeholder="Password"
-              register={register}
-              type="password"
-              name="password"
-              error={errors?.password?.message}
-            />
-            <Paragraph>Forgot your password?</Paragraph>
-            <Button type="submit">Sign In</Button>
-          </Form>
-        </SignInContainer>
+              <Input
+                className="w-full"
+                {...register("taiKhoan", {
+                  required: "(*) Tài khoản không được để trống",
+                })}
+                type="text"
+                placeholder="Name"
+              />
+              <Input
+                className="w-full"
+                {...register("email", {
+                  required: "(*) Email không được để trống",
+                })}
+                type="email"
+                placeholder="Email"
+              />
+              <Input
+                className="w-full"
+                {...register("matKhau", {
+                  required: "(*) Mật khẩu không được để trống",
+                })}
+                type="password"
+                placeholder="Password"
+              />
+
+              <Button type="submit">Sign Up</Button>
+            </Form>
+          </SignUpContainer>
+        )}
 
         <OverlayContainer className="overlay-container">
           <Overlay className="overlay">
@@ -196,4 +220,3 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
     </Modal>
   );
 };
-
