@@ -1,6 +1,5 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 import { userApi } from "apis";
 import cn from "classnames";
 import { Input } from "components";
@@ -11,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { userManagementActions } from "../../../store/userManagement";
 import {
-  Button,
   Form,
   FormContainer,
   GhostButton,
@@ -25,13 +23,13 @@ import {
   SocialContainer,
   Title,
 } from "./AuthStyles";
-// import { handleError } from "utils";
 
 export const AuthTemplate = ({ isOpen, onCloseModal }) => {
   const [signIn, setSignIn] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Form setup
   const {
     register,
     handleSubmit,
@@ -39,7 +37,6 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
     reset,
   } = useForm({
     mode: "onChange",
-    // resolver: zodResolver(LoginSchema || RegisterSchema),
   });
 
   // Login mutation
@@ -49,27 +46,30 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
       dispatch(userManagementActions.login(response));
       onCloseModal();
       toast.success("Login Success");
-      reset()
+      reset();
       navigate("/");
     },
     onError: (error) => {
-      toast.error(error?.response?.data?.content);
+      toast.success(error);
     },
   });
 
   // Register mutation (example, replace with actual implementation)
   const { mutate: handleRegister, isPending: isPendingRegister } = useMutation({
-    mutationFn: (payload) => userApi.register(payload),
+    mutationFn: (payload) => userApi.register(payload), // Assuming you have a userApi.register function
     onSuccess: () => {
-      toast.success("Registration Successfull");
       reset();
       onCloseModal();
+      toast.success("Registration Successful");
+      navigate("/");
     },
+
     onError: (error) => {
-      toast.error(error?.response?.data?.content);
+      toast.success(error);
     },
   });
-  // Submit handler for option
+
+  // Submit handler for Login
   const onSubmitLogin = async (values) => {
     const payload = {
       taiKhoan: values.taiKhoan_login,
@@ -78,17 +78,19 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
     handleLogin(payload);
   };
 
+  // Submit handler for Register
   const onSubmitRegister = async (values) => {
     const payload = {
       hoTen: values.hoTen,
       taiKhoan: values.taiKhoan_register,
-      matKhau: values.matKhau,
       email: values.email,
+      matKhau: values.matKhau,
       soDT: values.soDT,
       maNhom: "GP01",
-    }
-    handleRegister(payload)
+    };
+    handleRegister(payload);
   };
+
   return (
     <Modal
       open={isOpen}
@@ -107,109 +109,141 @@ export const AuthTemplate = ({ isOpen, onCloseModal }) => {
       <FormContainer
         className={cn({ "signin-active": signIn, "signup-active": !signIn })}
       >
-        {signIn ? (
-          <SignInContainer className="sign-in-container">
-            <Form onSubmit={handleSubmit(onSubmitLogin)}>
-              <Title>Sign in</Title>
-              <SocialContainer>
-                <SocialButton>
-                  <i className="fab fa-facebook-f"></i>
-                </SocialButton>
-                <SocialButton>
-                  <i className="fab fa-google-plus-g"></i>
-                </SocialButton>
-                <SocialButton>
-                  <i className="fab fa-linkedin-in"></i>
-                </SocialButton>
-              </SocialContainer>
-              <Paragraph>or use your account</Paragraph>
-              <Input
-                className="w-full"
-                id="taiKhoan_login"
-                placeholder="Tài khoản"
-                register={register}
-                name="taiKhoan_login"
-                error={errors?.taiKhoan_login?.message}
-              />
-              <Input
-                className="w-full"
-                id="password"
-                placeholder="Mật khẩu"
-                register={register}
-                type="password"
-                name="password"
-                error={errors?.password?.message}
-              />
-              <Paragraph>Forgot your password?</Paragraph>
-              <Button type="submit" disabled={isPendingLogin}>Sign In</Button>
-            </Form>
-          </SignInContainer>
-        ) : (
-          <SignUpContainer className="sign-up-container">
-            <Form onSubmit={handleSubmit(onSubmitRegister)}>
-              <Title>Create Account</Title>
-              <SocialContainer>
-                <SocialButton>
-                  <i className="fab fa-facebook-f"></i>
-                </SocialButton>
-                <SocialButton>
-                  <i className="fab fa-google-plus-g"></i>
-                </SocialButton>
-                <SocialButton>
-                  <i className="fab fa-linkedin-in"></i>
-                </SocialButton>
-              </SocialContainer>
-              <Paragraph>or use your email for registration</Paragraph>
-              Uncomment these lines to use inputs for registration
-              <Input
-                className="w-full"
-                register={register}
-                id="hoTen"
-                name="hoTen"
-                type="text"
-                placeholder="Họ Tên"
-                error={errors?.hoTen?.message}
-              />
-              <Input
-                className="w-full"
-                register={register}
-                id="taiKhoan_register"
-                name="taiKhoan_register"
-                type="text"
-                placeholder="Tài khoản"
-                error={errors?.taiKhoan_register?.message}
-              />
-              <Input
-                className="w-full"
-                register={register}
-                id="matKhau"
-                name="matKhau"
-                type="password"
-                placeholder="Mật khẩu"
-                error={errors?.matKhau?.message}
-              />
-              <Input
-                className="w-full"
-                register={register}
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Email"
-                error={errors?.email?.message}
-              />
-              <Input
-                className="w-full"
-                register={register}
-                id="soDT"
-                name="soDT"
-                type="text"
-                placeholder="Số điện thoại"
-                error={errors?.soDT?.message}
-              />
-              <Button type="submit" disabled={isPendingRegister}>Sign Up</Button>
-            </Form>
-          </SignUpContainer>
-        )}
+        <SignInContainer className="sign-in-container">
+          <Form onSubmit={handleSubmit(onSubmitLogin)}>
+            <Title>Sign in</Title>
+            <SocialContainer>
+              <SocialButton>
+                <i className="fab fa-facebook-f"></i>
+              </SocialButton>
+              <SocialButton>
+                <i className="fab fa-google-plus-g"></i>
+              </SocialButton>
+              <SocialButton>
+                <i className="fab fa-linkedin-in"></i>
+              </SocialButton>
+            </SocialContainer>
+            <Paragraph>or use your account</Paragraph>
+            <Input
+              className="w-full"
+              id="taiKhoan_login"
+              placeholder="tài khoản"
+              register={register}
+              name="taiKhoan_login"
+              error={errors?.taiKhoan_login?.message}
+            />
+            <Input
+              className="w-full"
+              id="password"
+              placeholder="Password"
+              register={register}
+              type="password"
+              name="password"
+              error={errors?.password?.message}
+            />
+            <Paragraph>Forgot your password?</Paragraph>
+            <Button
+              htmlType="submit"
+              loading={isPendingLogin}
+              style={{
+                borderRadius: "20px",
+                border: "1px solid #ff4b2b",
+                backgroundColor: "#ff4b2b",
+                color: "#fff",
+                fontSize: "15px",
+                fontWeight: "bold",
+                padding: "24px 47px",
+                letterSpacing: "1px",
+                transition: "transform 80ms ease-in",
+                marginTop: "10px",
+                textTransform: "uppercase",
+              }}
+            >
+              Sign In
+            </Button>
+          </Form>
+        </SignInContainer>
+        <SignUpContainer className="sign-up-container">
+          <Form onSubmit={handleSubmit(onSubmitRegister)}>
+            <Title>Create Account</Title>
+            <SocialContainer>
+              <SocialButton>
+                <i className="fab fa-facebook-f"></i>
+              </SocialButton>
+              <SocialButton>
+                <i className="fab fa-google-plus-g"></i>
+              </SocialButton>
+              <SocialButton>
+                <i className="fab fa-linkedin-in"></i>
+              </SocialButton>
+            </SocialContainer>
+            <Paragraph>or use your email for registration</Paragraph>
+            <Input
+              className="w-full"
+              register={register}
+              id="hoTen"
+              name="hoTen"
+              type="text"
+              placeholder="Họ tên"
+              error={errors?.hoTen?.message}
+            />
+            <Input
+              className="w-full"
+              register={register}
+              id="taiKhoan_register"
+              name="taiKhoan_register"
+              type="text"
+              placeholder="Tài khoản"
+              error={errors?.taiKhoan_register?.message}
+            />
+            <Input
+              className="w-full"
+              register={register}
+              type="password"
+              placeholder="Mật khẩu"
+              id="matKhau"
+              name="matKhau"
+              error={errors?.matKhau?.message}
+            />
+            <Input
+              className="w-full"
+              register={register}
+              type="email"
+              placeholder="Email"
+              id="email"
+              name="email"
+              error={errors?.email?.message}
+            />
+            <Input
+              className="w-full"
+              register={register}
+              id="soDT"
+              name="soDT"
+              type="text"
+              placeholder="Số điện thoại"
+              error={errors?.soDT?.message}
+            />
+            <Button
+              htmlType="submit"
+              loading={isPendingRegister}
+              style={{
+                borderRadius: "20px",
+                border: "1px solid #ff4b2b",
+                backgroundColor: "#ff4b2b",
+                color: "#fff",
+                fontSize: "15px",
+                fontWeight: "bold",
+                padding: "24px 47px",
+                letterSpacing: "1px",
+                transition: "transform 80ms ease-in",
+                marginTop: "10px",
+                textTransform: "uppercase",
+              }}
+            >
+              Sign Up
+            </Button>
+          </Form>
+        </SignUpContainer>
         <OverlayContainer className="overlay-container">
           <Overlay className="overlay">
             <OverlayPanel className="overlay-panel">

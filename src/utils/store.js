@@ -4,8 +4,7 @@ export const storage = {
   },
   get(name) {
     const value = localStorage.getItem(name);
-    if (value) return JSON.parse(value);
-    return null
+    return value ? JSON.parse(value) : null;
   },
   remove(name) {
     localStorage.removeItem(name);

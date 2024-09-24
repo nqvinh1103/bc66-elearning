@@ -1,15 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "antd";
+import { Avatar, Button, Popover } from "antd";
 import cn from "classnames";
 import { AuthTemplate } from "components";
 import { useAuth, useQueryParams } from "hooks";
 import { useOpenModal } from "hooks/useOpenModal";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { courseApi } from "../../apis/course.api";
+import { userApi } from "../../apis/user.api";
 import { userManagementActions } from "../../store/userManagement";
 import styles from "./Header.module.scss";
 
@@ -18,6 +19,7 @@ export const Header = () => {
   const { isOpen, openModal, closeModal } = useOpenModal();
   const [queryParams, setQueryParams] = useQueryParams();
   const { accessToken, user } = useAuth();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
     try {
@@ -29,13 +31,18 @@ export const Header = () => {
     }
   };
 
+  const handleAccount = async () => {
+    const response = await userApi.getUserByAccessToken();
+    dispatch(userManagementActions.getUserByAccessToken(response))
+    navigate("/account")
+  }
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["list-danhmuc"],
     queryFn: () => courseApi.getDanhMucKhoaHoc(),
   });
 
   console.log(data);
-
   return (
     <>
       <Container
@@ -55,14 +62,14 @@ export const Header = () => {
                   >
                     DANH MỤC
                   </NavLink>
-                  <div className="absolute hidden group-hover:block bg-white shadow-md mt-2 rounded-lg">
+                  <div className="absolute hidden group-hover:block bg-white shadow-md mt-2 rounded-lg ">
                     {data?.map((item) => {
                       return (
                         <NavLink
                           key={`danhmuc-${item.maDanhMuc}`}
                           to={`/danhmuckhoahoc/${item.maDanhMuc}`}
                           target="_blank"
-                          className="group-hover:text-blue-500"
+                          className={`${styles.danhMuc}group-hover:text-blue-500 block py-2`}
                         >
                           {item.tenDanhMuc}
                         </NavLink>
@@ -125,12 +132,40 @@ export const Header = () => {
                   </NavLink>
                 </li>
                 {accessToken ? (
-                  <li>
-                    <NavLink to="/" onClick={() => handleLogout()}>
-                      <i className="fa-solid fa-fa-sign-out-alt"></i>
-                      Đăng Xuất
-                    </NavLink>
-                  </li>
+                  <>
+                    <Popover
+                      content={
+                        <div className="p-10 cursor-pointer">
+                          <p className="font-500 text-16">Hello {user?.hoTen}!</p>
+                          <hr className="my-16" />
+                          <p
+                            className="text-16"
+                            onClick={handleAccount}
+                          >
+                            Thông tin tài khoản
+                          </p>
+                          <hr className="my-16" />
+                          <Button
+                            className="！h-[46px]"
+                            type="primary"
+                            onClick={handleLogout}
+                          >
+                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span className="ml-10">Đăng xuất</span>
+                          </Button>
+                        </div>
+                      }
+                      trigger="click"
+                      arrow={true}
+                    >
+                      <Avatar
+                        size="large"
+                        className="cursor-pointer mt-10"
+                      >
+                        <i className="fa-regular fa-user text-20"></i>
+                      </Avatar>
+                    </Popover>
+                  </>
                 ) : (
                   <li>
                     <NavLink to="/" onClick={openModal}>

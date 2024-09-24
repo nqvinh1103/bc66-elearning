@@ -3,6 +3,7 @@ import styles from "./Classes.module.scss";
 
 export const Classes = () => {
   return (
+    <>
     <section className={styles.classesBody}>
       <div className={styles.titleClasses}>
         <h3>Khóa học</h3>
@@ -55,5 +56,6 @@ export const Classes = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
