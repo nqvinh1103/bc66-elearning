@@ -23,11 +23,11 @@ const userManagementSlice = createSlice({
             storage.remove("userLogin");
         },
         getUserByAccessToken: (state, {payload}) => {
+            storage.save("userLogin", payload)
             state.userLogin = payload
         }
     }
 })
-
 export const {
     actions: userManagementActions,
     reducer: userManagementReducers,
