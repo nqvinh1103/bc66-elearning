@@ -3,6 +3,6 @@ import { courseManagementReducers } from "./courseManagement";
 import { userManagementReducers } from "./userManagement";
 
 export const rootReducer = combineReducers({
-    userManagement: userManagementReducers,
-    courseManagement: courseManagementReducers,
-})
+  userManagement: userManagementReducers,
+  courseManagement: courseManagementReducers,
+});

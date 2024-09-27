@@ -9,7 +9,7 @@ export const userApi = {
       await handleSleep()
       return response.data;
     } catch (error) {
-      throw Error(error?.response?.data?.content);
+      throw error?.response?.data
     }
   },
   register: async (payload) => {
@@ -18,7 +18,7 @@ export const userApi = {
       await handleSleep()
       return response.data;
     } catch (error) {
-      throw Error(error?.response?.data?.content)
+      throw error?.response?.data
     }
   },
   getUserByAccessToken: async () => {
@@ -29,7 +29,17 @@ export const userApi = {
         return response.data
       }
     } catch (error) {
-      throw Error(error?.response?.data)
+      throw error?.response?.data
+    }
+  },
+  update: async (payload) => {
+    try {
+      await fetcher.put("/QuanLyNguoiDung/CapNhatThongTinNguoiDung", payload)
+      await handleSleep()
+      const response = await userApi.getUserByAccessToken()
+      return response
+    } catch (error) {
+      throw error.response.data
     }
   }
   

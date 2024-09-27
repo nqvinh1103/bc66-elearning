@@ -1,9 +1,15 @@
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "antd";
 import { Input } from "components";
 import { useAuth } from "hooks";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { styled } from "styled-components";
+import { userApi } from "../../../apis/user.api";
+import { userManagementActions } from "../../../store/userManagement";
 export const AccountInfo = () => {
   const {
     reset,
@@ -13,15 +19,39 @@ export const AccountInfo = () => {
   } = useForm({
     mode: "onChange",
   });
-  const onSubmit = () => {
-    console.log("1243");
+  const onSubmit = async (values) => {
+    const payload = {
+      taiKhoan: values.taiKhoan,
+      matKhau: values.matKhau,
+      hoTen: values.hoTen,
+      soDT: values.soDT,
+      maLoaiNguoiDung: values.maLoaiNguoiDung,
+      maNhom: values.maNhom,
+      email: values.email,
+    }
+    handleUpdate(payload)
+    // console.log(payload)
   };
-  const {user} = useAuth()
+  const { user } = useAuth();
   useEffect(() => {
     reset({
       ...user,
     });
   }, [user, reset]);
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { mutate: handleUpdate, isPending: isPendingUpdate } = useMutation({
+    mutationFn: (payload) => userApi.update(payload),
+    onSuccess: (response) => {
+      dispatch(userManagementActions.getUserByAccessToken(response));
+      toast.success("Update succesfully")
+      navigate("/account")
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-[20px] text-left">
       <p className="text-20 font-600"> Thông tin tài khoản</p>
@@ -47,7 +77,7 @@ export const AccountInfo = () => {
       <InputStyled
         label="Mật Khẩu"
         name="matKhau"
-        type = "password"
+        type="password"
         register={register}
         error={errors?.matKhau?.message}
       />
@@ -72,7 +102,7 @@ export const AccountInfo = () => {
         disabled={true}
       />
       <div className="text-right mt-20">
-        <Button htmlType="submit" type="primary" className="h-[46px] ">
+        <Button htmlType="submit" type="primary" className="h-[46px]" loading={isPendingUpdate}>
           Update
         </Button>
       </div>
