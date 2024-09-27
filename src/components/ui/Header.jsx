@@ -33,9 +33,9 @@ export const Header = () => {
 
   const handleAccount = async () => {
     const response = await userApi.getUserByAccessToken();
-    dispatch(userManagementActions.getUserByAccessToken(response))
-    navigate("/account")
-  }
+    dispatch(userManagementActions.getUserByAccessToken(response));
+    navigate("/account");
+  };
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["list-danhmuc"],
@@ -136,14 +136,21 @@ export const Header = () => {
                     <Popover
                       content={
                         <div className="p-10 cursor-pointer">
-                          <p className="font-500 text-16">Hello {user?.hoTen}!</p>
+                          <p className="font-500 text-16">
+                            Hello {user?.hoTen}!
+                          </p>
                           <hr className="my-16" />
-                          <p
-                            className="text-16"
-                            onClick={handleAccount}
-                          >
+                          <p className="text-16" onClick={handleAccount}>
                             Thông tin tài khoản
                           </p>
+                          {user.maLoaiNguoiDung === "GV" && (
+                            <>
+                              <hr className="my-16" />
+                              <NavLink className="" to="/admin">
+                                Admin Page
+                              </NavLink>
+                            </>
+                          )}
                           <hr className="my-16" />
                           <Button
                             className="！h-[46px]"
@@ -158,10 +165,7 @@ export const Header = () => {
                       trigger="click"
                       arrow={true}
                     >
-                      <Avatar
-                        size="large"
-                        className="cursor-pointer mt-10"
-                      >
+                      <Avatar size="large" className="cursor-pointer mt-10">
                         <i className="fa-regular fa-user text-20"></i>
                       </Avatar>
                     </Popover>

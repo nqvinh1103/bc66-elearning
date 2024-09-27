@@ -1,6 +1,9 @@
 import { Home } from "pages";
 import { useRoutes } from "react-router-dom";
 import { MainLayout } from "../components";
+import { AdminGuard } from "../guard/AdminGuard";
+import { AuthGuard } from "../guard/AuthGuard";
+import { Admin } from "../pages/admin/Admin";
 import { Account } from "../pages/client/Account/Account";
 import { Blog } from "../pages/client/Blog/Blog";
 import { Classes } from "../pages/client/Classes/Classes";
@@ -21,7 +24,11 @@ const Router = () => {
         },
         {
           path: "/account",
-          element: <Account/>
+          element: (
+            <AuthGuard>
+              <Account />
+            </AuthGuard>
+          ),
         },
         {
           path: "/danhmuckhoahoc/:maDanhMuc",
@@ -54,6 +61,19 @@ const Router = () => {
         {
           path: "/blog",
           element: <Blog />,
+        },
+      ],
+    },
+    {
+      path: "/admin",
+      element: (
+        <AdminGuard>
+          <Admin />
+        </AdminGuard>
+      ),
+      children: [
+        {
+          index: true,
         },
       ],
     },
