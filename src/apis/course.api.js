@@ -1,3 +1,4 @@
+import { userApi } from "apis";
 import { fetcher } from "./fetcher";
 
 export const courseApi = {
@@ -51,8 +52,9 @@ export const courseApi = {
   },
   cancelCourse: async (payload) => {
     try {
-      const response = await fetcher.post("/QuanLyKhoaHoc/HuyGhiDanh", payload);
-      return response.data;
+      await fetcher.post("/QuanLyKhoaHoc/HuyGhiDanh", payload);
+      const response = await userApi.getUserByAccessToken();
+      return response;
     } catch (error) {
       throw error.response.data;
     }

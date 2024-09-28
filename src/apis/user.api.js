@@ -45,12 +45,4 @@ export const userApi = {
       throw error.response.data;
     }
   },
-  cancelCourse: async (payload) => {
-    try {
-      const response = await fetcher.post("/QuanLyKhoaHoc/HuyGhiDanh", payload);
-      return response.data;
-    } catch (error) {
-      throw error.response.data;
-    }
-  },
 };

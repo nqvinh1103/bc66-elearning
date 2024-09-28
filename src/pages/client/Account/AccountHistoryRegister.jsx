@@ -1,20 +1,23 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "hooks";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { userApi } from "../../../apis/user.api";
+import { courseApi } from "../../../apis/course.api";
 import { userManagementActions } from "../../../store/userManagement";
 import styles from "./AccountHistoryRegister.module.scss";
 
 export const AccountHistoryRegister = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   console.log(user.chiTietKhoaHocGhiDanh);
   const dispatch = useDispatch();
   const { mutate: handleCancelCourse } = useMutation({
-    mutationFn: (payload) => userApi.cancelCourse(payload),
+    mutationFn: (payload) => courseApi.cancelCourse(payload),
     onSuccess: (response) => {
       dispatch(userManagementActions.getUserByAccessToken(response));
-      toast.success("Đăng ký khóa học thành công");
+      toast.success("Hủy ghi danh khóa học thành công");
+      navigate("/account");
     },
     onError: (error) => {
       toast.error(error?.response?.data?.content);
