@@ -146,7 +146,10 @@ export const Header = () => {
                           {user.maLoaiNguoiDung === "GV" && (
                             <>
                               <hr className="my-16" />
-                              <NavLink className="" to="/admin">
+                              <NavLink
+                                className="hover:text-blue-500"
+                                to="/admin"
+                              >
                                 Admin Page
                               </NavLink>
                             </>
