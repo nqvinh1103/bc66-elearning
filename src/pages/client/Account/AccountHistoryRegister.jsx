@@ -1,14 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "hooks";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { courseApi } from "../../../apis/course.api";
+import { userApi } from "../../../apis/user.api";
+import { userManagementActions } from "../../../store/userManagement";
 import styles from "./AccountHistoryRegister.module.scss";
+
 export const AccountHistoryRegister = () => {
   const { user } = useAuth();
   console.log(user.chiTietKhoaHocGhiDanh);
+  const dispatch = useDispatch();
   const { mutate: handleCancelCourse } = useMutation({
-    mutationFn: (payload) => courseApi.cancelCourse(payload),
-    onSuccess: () => {
+    mutationFn: (payload) => userApi.cancelCourse(payload),
+    onSuccess: (response) => {
+      dispatch(userManagementActions.getUserByAccessToken(response));
       toast.success("Đăng ký khóa học thành công");
     },
     onError: (error) => {
@@ -16,8 +21,9 @@ export const AccountHistoryRegister = () => {
     },
   });
 
-  const onSubmitCourse = () => {
+  const onSubmitCourse = (maKhoaHoc) => {
     const payload = {
+      maKhoaHoc: maKhoaHoc,
       taiKhoan: user?.taiKhoan,
     };
     handleCancelCourse(payload);
@@ -36,7 +42,7 @@ export const AccountHistoryRegister = () => {
       </div>
       {user.chiTietKhoaHocGhiDanh.length > 0 &&
         user.chiTietKhoaHocGhiDanh.map((course) => {
-          const { tenKhoaHoc, hinhAnh } = course;
+          const { tenKhoaHoc, hinhAnh, maKhoaHoc } = course;
           return (
             <>
               <section className={styles.courseInfo}>
@@ -92,7 +98,7 @@ export const AccountHistoryRegister = () => {
                     {/* 3 */}
                     <div className={styles.cancelNet}>
                       <button
-                        onClick={() => onSubmitCourse()}
+                        onClick={() => onSubmitCourse(maKhoaHoc)}
                         className={styles.btnGlobal}
                       >
                         Hủy khóa học

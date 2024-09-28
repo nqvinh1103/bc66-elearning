@@ -6,41 +6,51 @@ export const userApi = {
   login: async (payload) => {
     try {
       const response = await fetcher.post("/QuanLyNguoiDung/DangNhap", payload);
-      await handleSleep()
+      await handleSleep();
       return response.data;
     } catch (error) {
-      throw error?.response?.data
+      throw error?.response?.data;
     }
   },
   register: async (payload) => {
     try {
-      const response = await fetcher.post("/QuanLyNguoiDung/DangKy", payload)
-      await handleSleep()
+      const response = await fetcher.post("/QuanLyNguoiDung/DangKy", payload);
+      await handleSleep();
       return response.data;
     } catch (error) {
-      throw error?.response?.data
+      throw error?.response?.data;
     }
   },
   getUserByAccessToken: async () => {
     try {
-      const token = storage.get("accessToken")
+      const token = storage.get("accessToken");
       if (token) {
-        const response = await fetcher.post("/QuanLyNguoiDung/ThongTinTaiKhoan", token)
-        return response.data
+        const response = await fetcher.post(
+          "/QuanLyNguoiDung/ThongTinTaiKhoan",
+          token
+        );
+        return response.data;
       }
     } catch (error) {
-      throw error?.response?.data
+      throw error?.response?.data;
     }
   },
   update: async (payload) => {
     try {
-      await fetcher.put("/QuanLyNguoiDung/CapNhatThongTinNguoiDung", payload)
-      await handleSleep()
-      const response = await userApi.getUserByAccessToken()
-      return response
+      await fetcher.put("/QuanLyNguoiDung/CapNhatThongTinNguoiDung", payload);
+      await handleSleep();
+      const response = await userApi.getUserByAccessToken();
+      return response;
     } catch (error) {
-      throw error.response.data
+      throw error.response.data;
     }
-  }
-  
+  },
+  cancelCourse: async (payload) => {
+    try {
+      const response = await fetcher.post("/QuanLyKhoaHoc/HuyGhiDanh", payload);
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
 };
