@@ -1,9 +1,9 @@
 .footerPage {
+  padding: 10px;
   background-color: #f0f8ff;
   .footerBody {
     padding: 10px 40px;
     .footerInfo {
-      padding-right: 300px;
       .textLogo {
         color: #252525;
         font-family: "fontPoppin";
@@ -12,7 +12,7 @@
         font-size: 20px;
         transition: all 0.3s;
         text-shadow: 5px -2px 3px #54d2c0;
-        padding-right: 150px;
+        display: flex;
         .textE {
           font-size: 40px;
           color: #41b294;
@@ -24,7 +24,7 @@
           bottom: 10px;
           color: #252525;
           font-weight: bolder;
-          font-size: 24px;
+          font-size: 25px;
           text-shadow: 5px -2px 3px #54d2c0;
         }
         .iconLogo {
@@ -37,22 +37,40 @@
         padding: 5px 0;
         transition: all 0.5s;
         font-weight: 500;
+        .iconFooter {
+          display: inline-block;
+          margin: 0 10px;
+          width: 40px;
+          height: 40px;
+          color: #fff;
+          background: #41b294;
+          border-radius: 50%;
+          line-height: 40px;
+          text-align: center;
+          transition: all 0.5s;
+        }
         i {
           padding-right: 10px;
         }
       }
     }
     .textFooterTitle h3 {
-      padding-right: 150px;
-      font-size: 18px;
+      text-align: left;
+      font-size: 26px;
       font-weight: bolder;
+    }
+    .textFooterTitle form{
+      text-align: left;
     }
     .menuFooter {
       text-align: left;
-     li{
+      li {
         margin-bottom: 10px;
         font-weight: 500;
-     }
+        i {
+          margin-right: 5px;
+        }
+      }
     }
     .formFooter {
       margin: 3px 0;
@@ -85,12 +103,12 @@
     justify-content: space-between;
     padding: 5px 50px;
     border-top: 1px solid #d0d0d0;
-    .iconMedia{
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        margin: 0 5px;
-        transition: all .3s linear;
+    .iconMedia {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      margin: 0 5px;
+      transition: all 0.3s linear;
     }
   }
 }

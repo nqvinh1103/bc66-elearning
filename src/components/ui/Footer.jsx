@@ -14,15 +14,17 @@ export const Footer = () => {
             </a>
             <ul className={styles.menuFooter}>
               <li>
-                <i className="fas fa-phone-alt iconFooter"></i>
+                <i className={`fas fa-phone-alt ${styles.iconFooter}`}></i>
                 <span>1800-123-4567</span>
               </li>
               <li>
-                <i className="fas fa-envelope-open-text iconFooter"></i>
+                <i
+                  className={`fas fa-envelope-open-text ${styles.iconFooter}`}
+                ></i>
                 <span>devit@gmail.com</span>
               </li>
               <li>
-                <i class="fas fa-map-marker-alt iconFooter"></i>
+                <i className={`fas fa-map-marker-alt ${styles.iconFooter}`}></i>
                 <span>Đà Nẵng</span>
               </li>
             </ul>
