@@ -45,4 +45,24 @@ export const userApi = {
       throw error.response.data;
     }
   },
+  getUserListPagination: async (page, pageSize) => {
+    try {
+      const response = await fetcher.get(
+        `/QuanLyNguoiDung/LayDanhSachNguoiDung_PhanTrang?MaNhom=GP01&page=${page}&pageSize=${pageSize}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
+  deleteUser: async (payload) => {
+    try {
+      const response = await fetcher.delete(
+        `/QuanLyNguoiDung/XoaNguoiDung?=${payload}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
 };
