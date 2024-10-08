@@ -1,4 +1,5 @@
 import { userApi } from "apis";
+import { handleSleep } from "utils";
 import { fetcher } from "./fetcher";
 
 export const courseApi = {
@@ -82,10 +83,26 @@ export const courseApi = {
   addCourse: async (payload) => {
     try {
       const response = await fetcher.post(
-        "/QuanLyKhoaHoc/ThemKhoaHoc",
+        "/QuanLyKhoaHoc/ThemKhoaHocUploadHinh",
         payload
       );
       return response.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
+  updateCourse: async (payload) => {
+    try {
+      const hinhAnh = payload.get("hinhAnh");
+      const isFileUpload = hinhAnh instanceof File || hinhAnh instanceof Blob;
+      const response = isFileUpload
+        ? await fetcher.post("QuanLyKhoaHoc/CapNhatKhoaHocUpload", payload)
+        : await fetcher.put(
+            "QuanLyKhoaHoc/CapNhatKhoaHoc",
+            Object.fromEntries(payload.entries())
+          );
+      handleSleep();
+      return response?.data;
     } catch (error) {
       throw error?.response?.data;
     }

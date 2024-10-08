@@ -1,9 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
-import { Button, DatePicker, Form, Input, InputNumber } from "antd";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button, DatePicker, Form, Input, InputNumber, Select } from "antd";
 import { useAuth } from "hooks";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { courseApi } from "../../../apis/course.api";
+import { PATH } from "../../../constants/path";
+import { CreateCourseSchema } from "../../../schema/CreateOrUpdateCourseSchema";
 
 export const CourseCreate = () => {
   const [imgSrc, setImgSrc] = useState("");
@@ -15,7 +20,7 @@ export const CourseCreate = () => {
     formState: { errors },
   } = useForm({
     mode: "all",
-    // resolver: zodResolver(CreateOrUpdateFilmSchema),
+    resolver: zodResolver(CreateCourseSchema),
   });
   const handleChangeFile = () => {
     const target = event.target;
@@ -33,26 +38,33 @@ export const CourseCreate = () => {
       };
     }
   };
+  const { data: listCategory } = useQuery({
+    queryKey: ["category"],
+    queryFn: () => courseApi.getDanhMucKhoaHoc(),
+  });
+  const navigate = useNavigate();
   const { mutate: handleAddCourse } = useMutation({
     mutationFn: (payload) => courseApi.addCourse(payload),
-    onSuccess: (response) => {
-      console.log(response);
+    onSuccess: () => {
+      toast.success("Tạo khóa học thành công");
+      navigate(PATH.course);
     },
     onError: (error) => {
       console.log(error);
     },
   });
   const onSubmit = async (values) => {
-    values.maNhom = user.maNhom;
+    values.maNhom = "GP01";
     values.taiKhoanNguoiTao = user.taiKhoan;
     const formData = new FormData();
     for (const key in values) {
       if (key !== "hinhAnh") {
         formData.append(key, values[key]);
       } else {
-        formData.append("hinhAnh", values.hinhAnh[0], values.hinhAnh.name);
+        formData.append("File", values.hinhAnh[0], values.hinhAnh.name);
       }
     }
+    console.log(formData.get("File"));
     handleAddCourse(formData);
   };
   return (
@@ -64,9 +76,9 @@ export const CourseCreate = () => {
         style={{ maxWidth: 600 }}
         onSubmitCapture={handleSubmit(onSubmit)}
       >
-        <Form.Item label="Tên Khóa Học">
+        <Form.Item label="Mã Khóa Học">
           <Controller
-            name="tenKhoaHoc"
+            name="maKhoaHoc"
             defaultValue=""
             control={control}
             render={({ field }) => <Input {...field} />}
@@ -74,6 +86,19 @@ export const CourseCreate = () => {
           {errors.tenKhoaHoc && (
             <p className="text-red-500 font-600 text-15 mt-10">
               {errors?.tenKhoaHoc?.message}
+            </p>
+          )}
+        </Form.Item>
+        <Form.Item label="Tên Khóa Học">
+          <Controller
+            name="tenKhoaHoc"
+            defaultValue=""
+            control={control}
+            render={({ field }) => <Input {...field} />}
+          />
+          {errors.maKhoaHoc && (
+            <p className="text-red-500 font-600 text-15 mt-10">
+              {errors?.maKhoaHoc?.message}
             </p>
           )}
         </Form.Item>
@@ -107,7 +132,7 @@ export const CourseCreate = () => {
           <Controller
             name="luotXem"
             control={control}
-            render={({ field }) => <InputNumber {...field} />}
+            render={({ field }) => <InputNumber className="flex" {...field} />}
           />
           {errors.luotXem && (
             <p className="text-red-500 font-600 text-15 mt-10">
@@ -119,7 +144,7 @@ export const CourseCreate = () => {
           <Controller
             name="danhGia"
             control={control}
-            render={({ field }) => <InputNumber {...field} />}
+            render={({ field }) => <InputNumber className="flex" {...field} />}
           />
           {errors.danhGia && (
             <p className="text-red-500 font-600 text-15 mt-10">
@@ -127,12 +152,28 @@ export const CourseCreate = () => {
             </p>
           )}
         </Form.Item>
-        <Form.Item label="Mã Danh Mục Khóa Học">
+        <Form.Item label="Danh Mục Khóa Học">
           <Controller
             name="maDanhMucKhoaHoc"
             defaultValue=""
             control={control}
-            render={({ field }) => <Input {...field} />}
+            render={({ field }) => (
+              <Select
+                className="flex text-left"
+                showSearch
+                style={{
+                  width: 225,
+                }}
+                placeholder="Chọn danh mục khóa học"
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                options={listCategory?.map((ele) => ({
+                  value: ele.maDanhMuc,
+                  label: ele.tenDanhMuc,
+                }))}
+              />
+            )}
           />
           {errors.maDanhMucKhoaHoc && (
             <p className="text-red-500 font-600 text-15 mt-10">
@@ -147,6 +188,7 @@ export const CourseCreate = () => {
             render={({ field }) => {
               return (
                 <DatePicker
+                  className="flex w-1/2"
                   picker="date"
                   format="DD/MM/YYYY"
                   onChange={(_, dateString) => {

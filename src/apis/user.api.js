@@ -55,4 +55,14 @@ export const userApi = {
       throw error?.response?.data;
     }
   },
+  deleteUser: async (payload) => {
+    try {
+      const response = await fetcher.delete(
+        `/QuanLyNguoiDung/XoaNguoiDung?=${payload}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
 };

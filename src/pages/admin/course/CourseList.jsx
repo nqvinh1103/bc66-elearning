@@ -2,19 +2,25 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Breadcrumb,
   Button,
+  Input,
   Pagination,
   Popconfirm,
   Rate,
   Table,
   Tag,
 } from "antd";
+import { useQueryParams } from "hooks";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { courseApi } from "../../../apis/course.api";
+import { PATH } from "../../../constants/path";
+const { Search } = Input;
 
 export const CourseList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const queryClient = useQueryClient();
+  const [queryParams, setQueryParams] = useQueryParams();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["list-courses", currentPage],
@@ -26,19 +32,36 @@ export const CourseList = () => {
     return <div>Something went wrong</div>;
   }
 
+  const onSearch = (value) => {
+    setQueryParams({
+      tenKhoaHoc: value || undefined,
+    });
+  };
+
+  const courseSearch = dataSource?.filter((element) =>
+    element.tenKhoaHoc
+      .toLowerCase()
+      .includes(queryParams?.tenKhoaHoc?.toLowerCase())
+  );
+
   const { mutate: handleDeleteCourseApi } = useMutation({
     mutationFn: (maKhoaHoc) => courseApi.deleteCourse(maKhoaHoc),
     onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["list-courses", { currentPage }],
-        type: "active",
+      queryClient.resetQueries({
+        queryKey: ["list-courses"],
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["list-courses"],
+        stale: true,
+        refetchType: "all",
       });
     },
     onError: (error) => {
       toast.error(error);
     },
   });
-
+  const navigate = useNavigate();
   const columns = [
     {
       title: "MaKhoaHoc",
@@ -98,9 +121,12 @@ export const CourseList = () => {
               type="primary"
               className="mr-2"
               onClick={() => {
-                console.log("edit");
-                // setDataEdit(record);
-                // openModal();
+                navigate(
+                  PATH.updateCourse.replace(
+                    ":maKhoaHoc",
+                    `${record.maKhoaHoc.toString()}`
+                  )
+                );
               }}
             >
               Edit
@@ -144,10 +170,20 @@ export const CourseList = () => {
         />
       </div>
       <h3 className="font-medium text-2xl mb-[30px]">List Courses</h3>
+      <div className="flex justify-end mb-[20px]">
+        <Search
+          placeholder="Keyword"
+          className="w-1/2"
+          allowClear
+          size="large"
+          enterButton="Search"
+          onSearch={onSearch}
+        />
+      </div>
       <Table
         rowKey="maKhoaHoc"
         columns={columns}
-        dataSource={dataSource}
+        dataSource={queryParams?.tenKhoaHoc ? courseSearch : dataSource}
         pagination={false}
         loading={false}
       />
