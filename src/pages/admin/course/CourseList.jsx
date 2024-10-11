@@ -9,7 +9,6 @@ import {
   Table,
   Tag,
 } from "antd";
-import { useQueryParams } from "hooks";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -22,9 +21,14 @@ export const CourseList = () => {
   const queryClient = useQueryClient();
   const [queryParams, setQueryParams] = useQueryParams();
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["list-courses", currentPage],
-    queryFn: () => courseApi.getListCoursePagination(currentPage, 10),
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["list-courses", currentPage, queryParams.tenKhoaHoc],
+    queryFn: () =>
+      courseApi.getListCoursePagination(
+        currentPage,
+        10,
+        queryParams?.tenKhoaHoc
+      ),
   });
   const dataSource = data?.items || [];
   const total = data?.totalCount || 0;
@@ -36,6 +40,7 @@ export const CourseList = () => {
     setQueryParams({
       tenKhoaHoc: value || undefined,
     });
+    refetch();
   };
 
   const courseSearch = dataSource?.filter((element) =>
@@ -47,12 +52,18 @@ export const CourseList = () => {
   const { mutate: handleDeleteCourseApi } = useMutation({
     mutationFn: (maKhoaHoc) => courseApi.deleteCourse(maKhoaHoc),
     onSuccess: () => {
+      if (dataSource.length === 1) {
+        setQueryParams({
+          tenKhoaHoc: undefined,
+        });
+      }
+      toast.success("Xóa khóa học thành công");
       queryClient.resetQueries({
-        queryKey: ["list-courses"],
+        queryKey: ["list-courses", { currentPage }],
         exact: true,
       });
       queryClient.invalidateQueries({
-        queryKey: ["list-courses"],
+        queryKey: ["list-courses", { currentPage }],
         stale: true,
         refetchType: "all",
       });

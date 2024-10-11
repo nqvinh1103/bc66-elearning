@@ -35,30 +35,78 @@ export const userApi = {
       throw error?.response?.data;
     }
   },
-  update: async (payload) => {
+  getUserListPagination: async (page, pageSize, taiKhoan = "") => {
     try {
-      await fetcher.put("/QuanLyNguoiDung/CapNhatThongTinNguoiDung", payload);
-      await handleSleep();
-      const response = await userApi.getUserByAccessToken();
-      return response;
+      const response = taiKhoan
+        ? await fetcher.get(
+            `/QuanLyNguoiDung/LayDanhSachNguoiDung_PhanTrang?MaNhom=GP01&page=${page}&pageSize=${pageSize}&tuKhoa=${taiKhoan}`
+          )
+        : await fetcher.get(
+            `/QuanLyNguoiDung/LayDanhSachNguoiDung_PhanTrang?MaNhom=GP01&page=${page}&pageSize=${pageSize}`
+          );
+      return response.data;
     } catch (error) {
-      throw error.response.data;
+      throw error?.response?.data;
     }
   },
-  getUserListPagination: async (page, pageSize) => {
+  addUser: async (payload) => {
+    try {
+      const response = await fetcher.post(
+        "/QuanLyNguoiDung/ThemNguoiDung",
+        payload
+      );
+      handleSleep();
+      return response.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
+  searchUser: async (tuKhoa) => {
     try {
       const response = await fetcher.get(
-        `/QuanLyNguoiDung/LayDanhSachNguoiDung_PhanTrang?MaNhom=GP01&page=${page}&pageSize=${pageSize}`
+        `/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${tuKhoa}`
+      );
+      handleSleep();
+      return response.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
+  getListUserType: async () => {
+    try {
+      const response = await fetcher.get(
+        "/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung"
       );
       return response.data;
     } catch (error) {
       throw error?.response?.data;
     }
   },
-  deleteUser: async (payload) => {
+  updateUser: async () => {
+    try {
+      const response = await fetcher.put(
+        "/QuanLyNguoiDung/CapNhatThongTinNguoiDung"
+      );
+      handleSleep();
+      return response?.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
+  deleteUser: async (taiKhoan) => {
     try {
       const response = await fetcher.delete(
-        `/QuanLyNguoiDung/XoaNguoiDung?=${payload}`
+        `/QuanLyNguoiDung/XoaNguoiDung?taiKhoan=${taiKhoan}`
+      );
+      return response?.data;
+    } catch (error) {
+      throw error?.response?.data;
+    }
+  },
+  getUserDetail: async (tuKhoa) => {
+    try {
+      const response = await fetcher.get(
+        `/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01&tuKhoa=${tuKhoa}`
       );
       return response.data;
     } catch (error) {
