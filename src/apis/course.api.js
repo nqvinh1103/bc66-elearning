@@ -60,10 +60,10 @@ export const courseApi = {
       throw error.response.data;
     }
   },
-  getListCoursePagination: async (page, pageSize) => {
+  getListCoursePagination: async (page, pageSize, tenKhoaHoc = "") => {
     try {
       const response = await fetcher.get(
-        `/QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang?page=${page}&pageSize=${pageSize}&MaNhom=GP01`
+        `/QuanLyKhoaHoc/LayDanhSachKhoaHoc_PhanTrang?page=${page}&pageSize=${pageSize}&MaNhom=GP01&tenKhoaHoc=${tenKhoaHoc}`
       );
       return response.data;
     } catch (error) {
