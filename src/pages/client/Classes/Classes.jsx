@@ -21,11 +21,13 @@ export const Classes = () => {
         queryParams?.tenKhoaHoc
       ),
   });
+
   const dataSource = data?.items || [];
   const total = data?.totalCount || 0;
   if (!isLoading && error) {
     return <div>Something went wrong</div>;
   }
+
   return (
     <>
       <section className={styles.classesBody}>
