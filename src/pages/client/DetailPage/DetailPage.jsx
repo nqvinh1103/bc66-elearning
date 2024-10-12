@@ -12,8 +12,8 @@ export const DetailPage = () => {
   const { maKhoaHoc } = useParams();
   const { isOpen, openModal, closeModal } = useOpenModal();
   const { accessToken, user } = useAuth();
-  console.log(accessToken)
-  console.log(user)
+  console.log(accessToken);
+  console.log(user);
   const { data, loading, error } = useQuery({
     queryKey: ["detail-course"],
     queryFn: () => courseApi.getDetailCourse(maKhoaHoc),
@@ -200,8 +200,8 @@ export const DetailPage = () => {
                     </div>
                     <div className={styles.lessonContent}>
                       <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
+                        <i className="fas fa-play-circle"></i>Thiết lập môi
+                        trường cho Windows
                       </span>
                       <span>
                         <i className="fas fa-clock"></i> 14:35
@@ -209,8 +209,8 @@ export const DetailPage = () => {
                     </div>
                     <div className={styles.lessonContent}>
                       <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
+                        <i className="fas fa-play-circle"></i>Tạo ứng dụng React
+                        - React-Scripts
                       </span>
                       <span>
                         <i className="fas fa-clock"></i> 14:35
@@ -218,55 +218,8 @@ export const DetailPage = () => {
                     </div>
                     <div className={styles.lessonContent}>
                       <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
-                      </span>
-                      <span>
-                        <i className="fas fa-clock"></i> 14:35
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.courseItemDetail}>
-                <div className={styles.courseDetailContent}>
-                  <div className={styles.sectionCourse}>
-                    <span>Mục 1: Giới thiệu</span>
-                    <button className={styles.btnPreview}>Xem trước</button>
-                  </div>
-                  <p>Bài học</p>
-                  <div className={styles.lessonContainer}>
-                    <div className={styles.lessonContent}>
-                      <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
-                      </span>
-                      <span>
-                        <i className="fas fa-clock"></i> 14:35
-                      </span>
-                    </div>
-                    <div className={styles.lessonContent}>
-                      <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
-                      </span>
-                      <span>
-                        <i className="fas fa-clock"></i> 14:35
-                      </span>
-                    </div>
-                    <div className={styles.lessonContent}>
-                      <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
-                      </span>
-                      <span>
-                        <i className="fas fa-clock"></i> 14:35
-                      </span>
-                    </div>
-                    <div className={styles.lessonContent}>
-                      <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
+                        <i className="fas fa-play-circle"></i>Ghi chú nhanh về
+                        dấu ngoặc kép cho string interpolation
                       </span>
                       <span>
                         <i className="fas fa-clock"></i> 14:35
@@ -278,15 +231,15 @@ export const DetailPage = () => {
               <div className={styles.courseItemDetail}>
                 <div className={styles.courseDetailContent}>
                   <div className={styles.sectionCourse}>
-                    <span>Mục 1: Giới thiệu</span>
+                    <span>Mục 2: Kiến thức căn bản</span>
                     <button className={styles.btnPreview}>Xem trước</button>
                   </div>
                   <p>Bài học</p>
                   <div className={styles.lessonContainer}>
                     <div className={styles.lessonContent}>
                       <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
+                        <i className="fas fa-play-circle"></i>Trang chủ và thành
+                        phần thư mục
                       </span>
                       <span>
                         <i className="fas fa-clock"></i> 14:35
@@ -294,8 +247,8 @@ export const DetailPage = () => {
                     </div>
                     <div className={styles.lessonContent}>
                       <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
+                        <i className="fas fa-play-circle"></i>Hướng dẫn khóa học
+                        + Liên kết Github
                       </span>
                       <span>
                         <i className="fas fa-clock"></i> 14:35
@@ -303,8 +256,8 @@ export const DetailPage = () => {
                     </div>
                     <div className={styles.lessonContent}>
                       <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
+                        <i className="fas fa-play-circle"></i>Trang chủ thương
+                        mai điện tử + thiết lập SASS
                       </span>
                       <span>
                         <i className="fas fa-clock"></i> 14:35
@@ -312,8 +265,54 @@ export const DetailPage = () => {
                     </div>
                     <div className={styles.lessonContent}>
                       <span>
-                        <i className="fas fa-play-circle"></i>Các khái niệm về
-                        React Component
+                        <i className="fas fa-play-circle"></i>Tệp CSS và SCSS
+                      </span>
+                      <span>
+                        <i className="fas fa-clock"></i> 14:35
+                      </span>
+                    </div>
+                    <div className={styles.lessonContent}>
+                      <span>
+                        <i className="fas fa-play-circle"></i>React 17: Cập nhật
+                        các gói + Phiên bản React mới nhất
+                      </span>
+                      <span>
+                        <i className="fas fa-clock"></i> 14:35
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.courseItemDetail}>
+                <div className={styles.courseDetailContent}>
+                  <div className={styles.sectionCourse}>
+                    <span>Mục 3: Kiến thức chuyên sâu</span>
+                    <button className={styles.btnPreview}>Xem trước</button>
+                  </div>
+                  <p>Bài học</p>
+                  <div className={styles.lessonContainer}>
+                    <div className={styles.lessonContent}>
+                      <span>
+                        <i className="fas fa-play-circle"></i>connect() and
+                        mapStateToProps
+                      </span>
+                      <span>
+                        <i className="fas fa-clock"></i> 14:35
+                      </span>
+                    </div>
+                    <div className={styles.lessonContent}>
+                      <span>
+                        <i className="fas fa-play-circle"></i>Trạng thái thư mục
+                        vào Redux
+                      </span>
+                      <span>
+                        <i className="fas fa-clock"></i> 14:35
+                      </span>
+                    </div>
+                    <div className={styles.lessonContent}>
+                      <span>
+                        <i className="fas fa-play-circle"></i>Thành phần Tổng
+                        quan về Bộ sưu tập
                       </span>
                       <span>
                         <i className="fas fa-clock"></i> 14:35
@@ -365,27 +364,27 @@ export const DetailPage = () => {
                   </li>
                   <li>
                     <p>
-                      Ghi danh: <span>10 học viên</span>
+                      Thời gian: <span>18 giờ</span>
                     </p>
-                    <i className="fas fa-user-graduate"></i>
+                    <i className="far fa-clock far fa-calendar-alt"></i>
                   </li>
                   <li>
                     <p>
-                      Ghi danh: <span>10 học viên</span>
+                      Bài học: <span>10</span>
                     </p>
-                    <i className="fas fa-user-graduate"></i>
+                    <i className="fas fa-book"></i>
                   </li>
                   <li>
                     <p>
-                      Ghi danh: <span>10 học viên</span>
+                      Video: <span>14</span>
                     </p>
-                    <i className="fas fa-user-graduate"></i>
+                    <i className="fas fa-photo-video"></i>
                   </li>
                   <li>
                     <p>
-                      Ghi danh: <span>10 học viên</span>
+                      Trình độ: <span>Người mới bắt đầu</span>
                     </p>
-                    <i className="fas fa-user-graduate"></i>
+                    <i className="fas fa-database"></i>
                   </li>
                 </ul>
                 <form action="" className={styles.formCoupon}>
